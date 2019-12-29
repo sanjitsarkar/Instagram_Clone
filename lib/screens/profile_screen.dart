@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/constants.dart';
@@ -93,10 +94,8 @@ child:CircularProgressIndicator()
   
                            CircleAvatar(
   
-                         radius: 35.0,
-                         backgroundImage: AssetImage('assets/images/profile.png'),
-
-                         backgroundColor:Colors.white
+                       backgroundColor: Colors.grey,
+                       backgroundImage: user.profileImgURL.isEmpty?AssetImage('assets/images/profile.png'):CachedNetworkImageProvider(user.profileImgURL),
   
                          ) ,
   

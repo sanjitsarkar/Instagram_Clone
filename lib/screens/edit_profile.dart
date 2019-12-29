@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/services/user_service.dart';
@@ -25,6 +29,7 @@ class _EditProfileState extends State<EditProfile> {
 
 // }
     String _fname="",_lname="",_bio="";
+    File _imgFile;
   void _submit()
   {
     if(_formkey.currentState.validate())
@@ -45,6 +50,16 @@ bio: _bio
     Navigator.pop(context);
 
   }
+  }
+  void _pickImageFile()
+  async{
+   File _pickedimgFile = await ImagePicker.pickImage(source:ImageSource.gallery??ImageSource.camera);
+    if(_imgFile!=null)
+    {
+      setState(() {
+        _imgFile = _pickedimgFile;
+      });
+    }
   }
     @override
     void initState() { 
@@ -73,6 +88,11 @@ bio: _bio
       ),
          body: ListView(
            children: <Widget>[
+             CircleAvatar(
+               radius:50.0,
+               backgroundColor: Colors.grey,
+               backgroundImage: widget.user.profileImgURL.isEmpty?AssetImage('assets/images/profile.png'):CachedNetworkImageProvider(widget.user.profileImgURL),
+             ),
              Form(
                key: _formkey,
                child:   Column(
