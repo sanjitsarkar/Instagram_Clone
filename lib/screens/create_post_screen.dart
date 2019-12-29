@@ -11,7 +11,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-
+appBar: AppBar(
+        title: Text("Instagram",style: TextStyle(fontFamily: 'Billabong',fontSize: 30.0),),
+        centerTitle: true,
+      ),
        body: 
        
        Container(

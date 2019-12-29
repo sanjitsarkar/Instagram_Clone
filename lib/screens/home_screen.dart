@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/feed_screen.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/screens/search_screen.dart';
+import 'package:instagram_clone/services/userId.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'create_post_screen.dart';
 import 'notification_screen.dart';
@@ -10,8 +12,7 @@ import 'notification_screen.dart';
 class HomeScreen extends StatefulWidget {
   // HomeScreen({Key key}) : super(key: key);
  static final String id = 'home_screen';
- final String userId;
-HomeScreen({this.userId});
+
   @override
    
   _HomeScreenState createState() => _HomeScreenState();
@@ -21,22 +22,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 PageController _pageController;
+
+  
 @override
 void initState() { 
   super.initState();
   _pageController = new PageController();
+//  getUserId();
+//  print(userid);
+UserId.getUserId();
+
 }
 
  int _currentTab=0;
 // final String username=  Future<FirebaseUser>;
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Instagram",style: TextStyle(fontFamily: 'Billabong',fontSize: 30.0),),
-        centerTitle: true,
-      ),
+      
        body: PageView(
          
          controller: _pageController,
@@ -45,7 +50,8 @@ void initState() {
            SearchScreen(),
            CreatePostScreen(),
            NotificationScreen(),
-           ProfileScreen(userId:widget.userId)
+           
+           ProfileScreen(userId:UserId.userid)
            
            
          ],

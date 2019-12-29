@@ -26,7 +26,10 @@ static final _userRef = _firestore.collection('users');
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
   return Scaffold(
-    
+    appBar: AppBar(
+        title: Text("Instagram",style: TextStyle(fontFamily: 'Billabong',fontSize: 30.0),),
+        centerTitle: true,
+      ),
 body:FutureBuilder(
   future: 
   _userRef.document(widget.userId).get(),
@@ -92,52 +95,56 @@ child:CircularProgressIndicator()
   
                          children: <Widget>[
   
-                           CircleAvatar(
+                           Container(
+                             width:70.0,
+                             height: 70.0,
+                             child: CircleAvatar(
   
                        backgroundColor: Colors.grey,
                        backgroundImage: user.profileImgURL.isEmpty?AssetImage('assets/images/profile.png'):CachedNetworkImageProvider(user.profileImgURL),
   
-                         ) ,
+                         ),
+                           ) ,
   
-                         Positioned(
+                        //  Positioned(
   
                            
   
-                           bottom: 5,
+                        //    bottom: 5,
   
-                           right: 5,
+                        //    right: 5,
   
-                           child: Container(
+                        //    child: Container(
   
-                             width: 20.0,
+                        //      width: 20.0,
   
-                           height: 20.0,
+                        //    height: 20.0,
   
                        
   
-                           alignment: Alignment.center,
+                        //    alignment: Alignment.center,
   
-                             decoration: BoxDecoration(
+                        //      decoration: BoxDecoration(
   
-                               borderRadius: BorderRadius.circular(10.0),
+                        //        borderRadius: BorderRadius.circular(10.0),
   
-                               color: Colors.blue
+                        //        color: Colors.blue
   
-                             ),
+                        //      ),
   
-                             child: IconButton(
+                        //      child: IconButton(
   
-                               padding: EdgeInsetsDirectional.only(bottom:25.0,start:0),
+                        //        padding: EdgeInsetsDirectional.only(bottom:25.0,start:0),
   
-                               onPressed: null,
+                        //        onPressed: null,
   
-                               icon: Icon(Icons.add,size: 20.0,color: Colors.white,),
+                        //        icon: Icon(Icons.add,size: 20.0,color: Colors.white,),
   
-                             ),
+                        //      ),
   
-                           ),
+                        //    ),
   
-                         )
+                        //  )
   
                          ],
   

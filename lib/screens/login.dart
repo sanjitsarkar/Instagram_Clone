@@ -10,6 +10,16 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool show = false;
+  _toggle()
+  {
+    setState(() {
+      if(show==false)
+      show=true;
+      else
+      show=false;
+    });
+  }
   final _formKey = GlobalKey<FormState>();
  String _email,_passw;
             void _submit() {
@@ -69,6 +79,7 @@ Form(
     :null,
      onSaved: (input)=>_email=input,
      decoration: new InputDecoration(
+       
        filled: true,
           errorStyle: TextStyle(
           
@@ -89,7 +100,7 @@ Form(
 
         width:MediaQuery.of(context).size.width/1,
         alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10.0),
+        margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 20.0),
         // padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10.0),
         // padding: EdgeInsets.only(left:20.0),
         height: 45.0,
@@ -100,12 +111,18 @@ Form(
         child: TextFormField(
      controller: null,
 
-             obscureText: true,
+             obscureText: show?false:true,
               validator: (input)=> input.length<6
     ?'Password length must be greater than 6!'
     :null,
     onSaved: (input)=>_passw=input,
      decoration: new InputDecoration(
+       
+       suffix: 
+        
+         IconButton(onPressed:_toggle,
+          icon:Icon(Icons.security),color: Colors.white,iconSize: 30.0,),
+      
          filled: true,
          errorStyle: TextStyle(
           

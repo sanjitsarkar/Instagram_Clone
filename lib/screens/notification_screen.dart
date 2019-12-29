@@ -12,7 +12,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
   
   return Scaffold(
-
+appBar: AppBar(
+        title: Text("Instagram",style: TextStyle(fontFamily: 'Billabong',fontSize: 30.0),),
+        centerTitle: true,
+      ),
        body: Container(
           width:double.infinity,
          height: double.infinity,

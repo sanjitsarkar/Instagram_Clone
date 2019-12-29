@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
+import 'package:instagram_clone/services/storage_services.dart';
 import 'package:instagram_clone/services/user_service.dart';
 
 class EditProfile extends StatefulWidget {
@@ -28,42 +29,75 @@ class _EditProfileState extends State<EditProfile> {
 //   _controller = new TextEditingController();
 
 // }
-    String _fname="",_lname="",_bio="";
+    String _fname="",_lname="",_bio="",_profileImgURL="";
+  
     File _imgFile;
-  void _submit()
-  {
-    if(_formkey.currentState.validate())
-    {
-      _formkey.currentState.save();
-      // print(_fname);
-      // print('$_lname $_bio ');
-    User user = new User(
-id:widget.user.id,
-fname: _fname,
-lname: _lname,
-bio: _bio
-      
-    );
 
-    print('{$user.fname} {$user.lname} {$user.bio} {$user.id} ');
-    UserService.updateUser(user);
-    Navigator.pop(context);
-
-  }
-  }
-  void _pickImageFile()
+   _pickImageFile()
   async{
-   File _pickedimgFile = await ImagePicker.pickImage(source:ImageSource.gallery??ImageSource.camera);
-    if(_imgFile!=null)
+   File _pickedimgFile = await ImagePicker.pickImage(source:ImageSource.gallery);
+    if(_pickedimgFile!=null)
     {
       setState(() {
         _imgFile = _pickedimgFile;
       });
     }
   }
+   _profileImage()
+{
+  if(_imgFile==null)
+  {
+return widget.user.profileImgURL.isEmpty?AssetImage('assets/images/profile.png'):CachedNetworkImageProvider(widget.user.profileImgURL);
+  }
+  else{
+    return FileImage(_imgFile);
+  }
+}
+    _submit()
+  async{
+    if(_formkey.currentState.validate())
+    {
+      _formkey.currentState.save();
+      // print(_fname);
+      // print('$_lname $_bio ');
+      if(_imgFile==null)
+      {
+         _profileImgURL=widget.user.profileImgURL;
+        
+      }
+      else{
+
+_profileImgURL = await StorageSevice.uploadProfileImg(widget.user.profileImgURL,_imgFile);
+
+
+
+      }
+    User user = new User(
+id:widget.user.id,
+fname: _fname,
+lname: _lname,
+bio: _bio,
+profileImgURL: _profileImgURL
+      
+    );
+
+    // print('{$user.fname} {$user.lname} {$user.bio} {$user.id} ');
+    UserService.updateUser(user);
+   
+ Navigator.pop(context);
+
+  }
+  }
+
+
+
     @override
     void initState() { 
       super.initState();
+      
+        
+      
+     
       _fname = widget.user.fname;
       _lname = widget.user.lname;
       _bio = widget.user.bio;
@@ -88,11 +122,37 @@ bio: _bio
       ),
          body: ListView(
            children: <Widget>[
-             CircleAvatar(
-               radius:50.0,
-               backgroundColor: Colors.grey,
-               backgroundImage: widget.user.profileImgURL.isEmpty?AssetImage('assets/images/profile.png'):CachedNetworkImageProvider(widget.user.profileImgURL),
+             InkWell(
+               onTap: _pickImageFile,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                 children: <Widget>[
+                   Container(
+                     width: 80.0,
+                     height: 80.0,
+                     decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(50.0),
+                       boxShadow: [
+                         BoxShadow(
+                           color: Colors.black.withOpacity(.1),
+                           blurRadius: 10.0
+                         )
+                       ]
+                     ),
+                     child: CircleAvatar(
+                      
+                 radius:50.0,
+                 backgroundColor: Colors.grey,
+                 backgroundImage: _profileImage(),
+                 
+               ),
+                   ),
+               Text("Edit Profile Picture",style: TextStyle(color: Colors.blue,fontSize: 18.0),),
+                 ],
+               ),
              ),
+             
              Form(
                key: _formkey,
                child:   Column(

@@ -19,10 +19,17 @@ _userRef.document(user.id).updateData(
   {
     'fname':user.fname,
     'lname':user.lname,
-    'bio':user.bio
+    'bio':user.bio,
+    'profileImgURL':user.profileImgURL
 
   } 
 );
+ }
+ static Future<QuerySnapshot> searchUser(String search)
+ {
+Future<QuerySnapshot> users = _userRef.where('fname',isGreaterThanOrEqualTo: search,).getDocuments();
+return users;
+
  }
 
       
